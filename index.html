@@ -288,7 +288,7 @@
   <div class="flag">⛳</div>
   <div>
     <h1>BUNKER TRACKER</h1>
-    <p>Dashboard 1.4</p>
+    <p>Dashboard 1.5</p>
   </div>
   <div class="header-right">
     <div id="statusDot"></div>
@@ -353,12 +353,17 @@ const db = firebase.firestore();
 
 const map = L.map('map', { zoomControl: true, attributionControl: true });
 
-// ✅ CartoDB Voyager — closest free tile to Google Maps
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-  attribution: '© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-  subdomains: 'abcd',
-  maxZoom: 20
-}).addTo(map);
+// Same tile providers as Bunker_locatie_tracker — no API key needed
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19
+});
+const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution: '© Esri',
+  maxZoom: 19
+});
+osmLayer.addTo(map);
+L.control.layers({ '🗺️ Open Streetmap': osmLayer, '🛰️ Satelliet': satelliteLayer }, {}, { position: 'topright' }).addTo(map);
 
 map.setView([52.3, 5.3], 7);
 
